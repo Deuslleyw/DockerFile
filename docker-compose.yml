@@ -1,0 +1,36 @@
+version: "3.3"
+services:
+  ## API ###
+  api_rest:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - api
+
+  ## POSTEGRE_SQL ###
+  pg-db:
+    image: postgres:14.12-alpine3.18
+    networks:
+      - api
+    environment:
+      POSTGRES_USER:  postgres
+      POSTGRES_PASSWORD:  1234567
+      POSTGRES_DB:  *****
+
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+
+
+networks:
+  api:
+    driver: bridge
+
+volumes:
+  postgresql:
+  postgresql_data:
